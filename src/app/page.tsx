@@ -34,6 +34,8 @@ import IncidentResponse from "@/app/components/incident-response";
 import FraudDetection from "@/app/components/fraud-detection";
 import { Separator } from "@/components/ui/separator";
 import AuthButton from "@/app/components/auth-button";
+import Profile from "./components/profile";
+import { useUser } from "@/firebase";
 
 type View =
   | "dashboard"
@@ -41,10 +43,12 @@ type View =
   | "malware"
   | "network"
   | "incident"
-  | "fraud";
+  | "fraud"
+  | "profile";
 
 export default function Home() {
   const [activeView, setActiveView] = useState<View>("dashboard");
+  const { user } = useUser();
 
   const renderView = () => {
     switch (activeView) {
@@ -60,6 +64,8 @@ export default function Home() {
         return <IncidentResponse />;
       case "fraud":
         return <FraudDetection />;
+       case "profile":
+        return <Profile />;
       default:
         return <Dashboard />;
     }
@@ -86,6 +92,18 @@ export default function Home() {
                 <span>Dashboard</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
+            {user && (
+               <SidebarMenuItem>
+                <SidebarMenuButton
+                  onClick={() => setActiveView("profile")}
+                  isActive={activeView === "profile"}
+                  tooltip="Profile"
+                >
+                  <User />
+                  <span>Profile</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            )}
             <Separator className="my-2" />
             <SidebarMenuItem>
               <SidebarMenuButton
