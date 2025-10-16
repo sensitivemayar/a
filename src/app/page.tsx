@@ -8,6 +8,7 @@ import {
   Mail,
   Network,
   ShieldAlert,
+  User,
   Wallet,
 } from "lucide-react";
 
@@ -32,6 +33,7 @@ import NetworkAnomaly from "@/app/components/network-anomaly";
 import IncidentResponse from "@/app/components/incident-response";
 import FraudDetection from "@/app/components/fraud-detection";
 import { Separator } from "@/components/ui/separator";
+import AuthButton from "@/app/components/auth-button";
 
 type View =
   | "dashboard"
@@ -138,7 +140,10 @@ export default function Home() {
           </SidebarMenu>
         </SidebarContent>
         <SidebarFooter>
-          <ThemeToggle />
+          <div className="flex items-center gap-2">
+            <AuthButton />
+            <ThemeToggle />
+          </div>
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
