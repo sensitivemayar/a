@@ -1,0 +1,52 @@
+{
+  "entities": {
+    "UserAccount": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "UserAccount",
+      "type": "object",
+      "description": "Stores user account information for the CyberMind application.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the user account."
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the user.",
+          "format": "email"
+        }
+      },
+      "required": [
+        "id",
+        "email"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "UserAccount",
+          "schema": {
+            "$ref": "#/backend/entities/UserAccount"
+          },
+          "description": "Stores user account information.  Path-based ownership ensures only the user can access this data.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure is designed to support the CyberMind application's core features, focusing on security and scalability. User accounts are stored in `/users/{userId}`. This uses Path-Based ownership for user data, ensuring that only the user can access their account data. The absence of custom claims (`DBAC`) means role management relies on database content alone, increasing transparency and auditability. No collaborative document structures are needed because all AI Agents run server-side (on behalf of the user). This design prioritizes authorization independence, eliminating the need for `get()` calls in security rules by colocating authentication context with data. Structural segregation is achieved by separating user accounts into their own collections. This approach enables simple, robust, and debuggable security rules that scale effectively."
+  }
+}
